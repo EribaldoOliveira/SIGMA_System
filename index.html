@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GERA System - Painel</title>
+
+  <!-- Estilos Principais -->
+  <link rel="stylesheet" href="CSS/styles.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.css" rel="stylesheet" />
+
+  <!-- FullCalendar JS (apenas uma vez) -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/main.min.js" defer></script>
+
+  <!-- Script Principal -->
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>SIGMA System</h1>
+    <h2><strong>Sistema Integrado de Gestão de Metas e Atividades</strong></h2>
+    <p>SIGPA System - Sistema Integrado de Gestão de Projetos e Atividades </p>
+    <h3>📋 <span class="highlight">Painel de Organização</span></h3>
+    <p>Gerencie cursos, pós-graduações, tarefas, projetos e prazos de forma integrada.</p>
+  </header>
+
+  <button id="botao-tema" aria-label="Alternar tema">🌙 Modo Escuro</button>
+
+  <main class="grid">
+    <!-- Cursos -->
+    <section class="card" aria-labelledby="titulo-cursos">
+      <h2 id="titulo-cursos">🎓 Cursos</h2>
+      <ul id="lista-cursos"></ul>
+      <input id="novo-curso" type="text" placeholder="Novo curso..." />
+      <button onclick="adicionarItem('curso', 'novo-curso', 'lista-cursos')" class="botao-adicionar">Adicionar</button>
+      <div class="card-actions">
+        <button class="botao-editar"><i class="fas fa-edit"></i> Editar</button>
+        <button class="botao-excluir"><i class="fas fa-trash-alt"></i> Excluir</button>
+      </div>
+    </section>
+
+    <!-- Pós-graduações -->
+    <section class="card" aria-labelledby="titulo-pos">
+      <h2 id="titulo-pos">🎓 Pós-graduações</h2>
+      <ul id="lista-pos"></ul>
+      <input id="nova-pos" type="text" placeholder="Nova pós-graduação..." />
+      <button onclick="adicionarItem('pos', 'nova-pos', 'lista-pos')" class="botao-adicionar">Adicionar</button>
+      <div class="card-actions">
+        <button class="botao-editar"><i class="fas fa-edit"></i> Editar</button>
+        <button class="botao-excluir"><i class="fas fa-trash-alt"></i> Excluir</button>
+      </div>
+    </section>
+
+    <!-- Tarefas -->
+    <section class="card" aria-labelledby="titulo-tarefas">
+      <h2 id="titulo-tarefas">🗂️ Tarefas e Prazos</h2>
+      <ul id="lista-tarefas"></ul>
+      <input id="nova-tarefa" type="text" placeholder="Nova tarefa..." />
+      <button onclick="adicionarItem('tarefa', 'nova-tarefa', 'lista-tarefas')" class="botao-adicionar">Adicionar</button>
+      <div class="card-actions">
+        <button class="botao-editar"><i class="fas fa-edit"></i> Editar</button>
+        <button class="botao-excluir"><i class="fas fa-trash-alt"></i> Excluir</button>
+      </div>
+    </section>
+
+    <!-- Projetos -->
+    <section class="card" aria-labelledby="titulo-projetos">
+      <h2 id="titulo-projetos">📁 Projetos</h2>
+      <ul id="lista-projetos"></ul>
+      <input id="novo-projeto" type="text" placeholder="Novo projeto..." />
+      <button onclick="adicionarItem('projeto', 'novo-projeto', 'lista-projetos')" class="botao-adicionar">Adicionar</button>
+      <div class="card-actions">
+        <button class="botao-editar"><i class="fas fa-edit"></i> Editar</button>
+        <button class="botao-excluir"><i class="fas fa-trash-alt"></i> Excluir</button>
+      </div>
+    </section>
+
+    <!-- Finanças -->
+    <section class="card" aria-labelledby="titulo-financas">
+      <h2 id="titulo-financas">💰 Finanças</h2>
+      <ul id="lista-financas"></ul>
+      <input id="nova-financa" type="text" placeholder="Nova despesa ou pagamento..." />
+      <button onclick="adicionarItem('financa', 'nova-financa', 'lista-financas')" class="botao-adicionar">Adicionar</button>
+      <div class="card-actions">
+        <button class="botao-editar"><i class="fas fa-edit"></i> Editar</button>
+        <button class="botao-excluir"><i class="fas fa-trash-alt"></i> Excluir</button>
+      </div>
+    </section>
+
+    <!-- Agenda de Prazos -->
+    <section class="card" id="agenda" aria-labelledby="titulo-agenda">
+      <h2 id="titulo-agenda">🗓️ Agenda de Prazos</h2>
+      <input id="nome-prazo" type="text" placeholder="Nome do prazo..." />
+      <input id="data-prazo" type="date" />
+      <button onclick="adicionarPrazo()" class="botao-adicionar">Adicionar Prazo</button>
+      <ul id="lista-prazos"></ul>
+    </section>
+
+    <!-- Calendário Customizado -->
+    <div class="card calendario-custom" aria-labelledby="titulo-calendario-custom">
+      <div class="calendar-header">
+        <button id="prev-month" aria-label="Mês anterior">«</button>
+        <h2 id="month-year"></h2>
+        <button id="next-month" aria-label="Próximo mês">»</button>
+      </div>
+      <div id="calendar-days" class="calendar-grid"></div>
+
+    </div>
+
+    <!-- Calendário de Eventos -->
+    <section class="card" id="calendario" aria-labelledby="titulo-calendario">
+      <h2 id="titulo-calendario">📅 Calendário de Eventos</h2>
+      <div id="calendar" style="max-width: 800px; margin: 20px auto; background: #fff; padding: 10px; border-radius: 8px;"></div>
+      <ul id="lista-eventos-calendario" class="lista-eventos"></ul>
+    </section>
+
+    <!-- Progresso das Tarefas -->
+    <div class="card progresso-tarefas">
+      <label for="barra-tarefas">Progresso das Tarefas:</label>
+      <div class="barra-progresso">
+        <div id="barra-tarefas" class="progresso-preenchido"></div>
+      </div>
+    </div>
+
+    
+
+    <!-- Filtro de Tarefas -->
+    <div class="card">
+      <label for="filtro-tarefas">Filtrar Tarefas:</label>
+      <select id="filtro-tarefas">
+        <option value="todas">Todas</option>
+        <option value="concluidas">Concluídas</option>
+        <option value="pendentes">Pendentes</option>
+      </select>
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer class="rodape">
+    <div class="rodape-conteudo">
+      <h2>Eribaldo dos Santos Oliveira</h2>
+      <address>
+        📍 Aracaju – SE | 📧 <a href="mailto:desenvolvedorwebst@gmail.com">desenvolvedorwebst@gmail.com</a>
+      </address>
+      <div class="contato-whatsapp">
+        <a href="https://wa.me/5579988035219?text=Olá%2C%20vi%20seu%20portfólio%20e%20gostaria%20de%20conversar!" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" aria-label="Conversar pelo WhatsApp">
+          <i class="fab fa-whatsapp"></i> Fale comigo no WhatsApp: (79) 9 8803-5219
+        </a>
+      </div>
+      <nav aria-label="Links sociais">
+        <p class="links">
+          🔗 <a href="https://github.com/EribaldoOliveira" target="_blank" rel="noopener noreferrer">GitHub</a> |
+          🔗 <a href="https://www.linkedin.com/in/eribaldo-oliveira/" target="_blank" rel="noopener noreferrer">LinkedIn</a> |
+          🌐 <a href="https://meuportfoli0.com" target="_blank" rel="noopener noreferrer">Portfólio</a>
+        </p>
+      </nav>
+      <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="voltar-topo" aria-label="Voltar ao topo">
+        ⬆️ Voltar ao topo
+      </button>
+    </div>
+    <p class="copy">&copy; 2025 GERA System — Sistema de Gestão Pessoal e Projetos</p>
+  </footer>
+</body>
+</html>
